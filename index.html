@@ -1,6 +1,1452 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recuerdos</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>we especial</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --p1: #0d0010;
+    --p2: #1a0030;
+    --p3: #2d0060;
+    --acc: #a020f0;
+    --acc2: #c860ff;
+    --acc3: #7b2fff;
+    --neon: #bf5fff;
+    --neon2: #e040fb;
+    --glass: rgba(160,32,240,0.08);
+    --glass2: rgba(160,32,240,0.15);
+    --border: rgba(160,32,240,0.3);
+    --text: #f0e6ff;
+    --text2: #c4a8e0;
+    --white: #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--p1);
+    color: var(--text);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ─── CANVAS BG ─── */
+  #bg-canvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+
+  /* ─── LOGIN ─── */
+  #login-screen {
+    position: fixed; inset: 0;
+    z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(ellipse at center, #1a003a 0%, #0d0010 70%);
+    backdrop-filter: blur(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  #login-screen.hide {
+    opacity: 0; transform: scale(1.1); pointer-events: none;
+  }
+
+  .login-box {
+    background: var(--glass2);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 60px 50px;
+    text-align: center;
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 80px rgba(160,32,240,0.25), inset 0 0 40px rgba(160,32,240,0.05);
+    animation: loginPop 0.8s cubic-bezier(.23,1.34,.7,1) both;
+    max-width: 420px; width: 90%;
+  }
+
+.login-icon img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f3096371;
+  box-shadow: 0 0 15px rgba(255, 0, 100, 0.6);
+}
+  
+
+  @keyframes loginPop {
+    from { opacity: 0; transform: scale(0.7) translateY(40px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .login-logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.4rem; font-weight: 900;
+    background: linear-gradient(135deg, var(--acc2), var(--neon2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: 4px;
+    text-shadow: none;
+    margin-bottom: 8px;
+  }
+
+  .login-tagline {
+    font-size: 0.9rem; color: var(--text2); letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 40px;
+  }
+
+  .login-icon {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, var(--acc3), var(--neon2));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 32px;
+    font-size: 2rem;
+    box-shadow: 0 0 40px rgba(160,32,240,0.6);
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%,100% { box-shadow: 0 0 30px rgba(160,32,240,0.5); }
+    50%      { box-shadow: 0 0 60px rgba(200,96,255,0.8), 0 0 100px rgba(160,32,240,0.4); }
+  }
+
+  .login-input-wrap { position: relative; margin-bottom: 20px; }
+
+  .login-input {
+    width: 100%;
+    padding: 16px 20px 16px 50px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 4px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .login-input:focus {
+    border-color: var(--acc2);
+    box-shadow: 0 0 20px rgba(160,32,240,0.4);
+  }
+
+  .login-input::placeholder { letter-spacing: 2px; color: rgba(196,168,224,0.4); }
+
+  .input-icon {
+    position: absolute; left: 16px; top: 50%;
+    transform: translateY(-50%); color: var(--acc); font-size: 1.1rem;
+  }
+
+  .login-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--acc3), var(--neon2));
+    border: none; border-radius: 12px;
+    color: #fff; font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem; font-weight: 700; letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 30px rgba(160,32,240,0.4);
+    text-transform: uppercase;
+    position: relative; overflow: hidden;
+  }
+
+  .login-btn::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+
+  .login-btn:hover::before { transform: translateX(100%); }
+  .login-btn:hover { box-shadow: 0 0 50px rgba(200,96,255,0.7); transform: translateY(-2px); }
+  .login-btn:active { transform: translateY(0); }
+
+  .login-error {
+    margin-top: 16px;
+    padding: 10px 16px;
+    background: rgba(255,50,50,0.15);
+    border: 1px solid rgba(255,80,80,0.4);
+    border-radius: 8px;
+    color: #ff8080;
+    font-size: 0.85rem; letter-spacing: 1px;
+    display: none;
+    animation: shakeErr 0.4s ease;
+  }
+
+  @keyframes shakeErr {
+    0%,100% { transform: translateX(0); }
+    20%,60%  { transform: translateX(-8px); }
+    40%,80%  { transform: translateX(8px); }
+  }
+
+  .login-error.show { display: block; }
+
+  /* ─── SITE WRAPPER ─── */
+  #site { display: none; position: relative; z-index: 1; }
+  #site.visible { display: block; animation: siteIn 1s ease both; }
+
+  @keyframes siteIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── NAVBAR ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 0 5%;
+    height: 70px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(13,0,16,0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+
+  nav.scrolled {
+    box-shadow: 0 4px 40px rgba(160,32,240,0.2);
+  }
+
+  .nav-logo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900; font-size: 1.2rem; letter-spacing: 3px;
+    background: linear-gradient(135deg, var(--acc2), var(--neon2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    cursor: pointer;
+  }
+
+  .nav-links {
+    display: flex; gap: 4px; list-style: none;
+  }
+
+  .nav-links li a {
+    display: block;
+    padding: 8px 16px;
+    color: var(--text2);
+    text-decoration: none;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600; font-size: 0.85rem; letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 8px;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+
+  .nav-links li a:hover, .nav-links li a.active {
+    color: var(--acc2);
+    background: var(--glass);
+    border-color: var(--border);
+    box-shadow: 0 0 15px rgba(160,32,240,0.2);
+  }
+
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px; cursor: pointer;
+    padding: 5px;
+  }
+
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--acc2); border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  /* ─── MOBILE NAV ─── */
+  @media (max-width: 768px) {
+    .nav-links {
+      position: fixed; top: 70px; left: 0; right: 0;
+      flex-direction: column; gap: 0;
+      background: rgba(13,0,16,0.97);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px;
+      transform: translateY(-120%);
+      transition: transform 0.4s cubic-bezier(.23,1,.32,1);
+    }
+    .nav-links.open { transform: translateY(0); }
+    .nav-links li a { padding: 14px 16px; font-size: 1rem; }
+    .hamburger { display: flex; }
+  }
+
+  /* ─── SECTIONS ─── */
+  .section {
+    display: none; min-height: 100vh;
+    padding: 100px 5% 60px;
+    position: relative;
+  }
+
+  .section.active { display: block; animation: fadeSection 0.5s ease both; }
+
+  @keyframes fadeSection {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── HERO ─── */
+  #sec-inicio {
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; flex-direction: column;
+    min-height: 100vh; padding-top: 70px;
+  }
+
+  #sec-inicio.active { display: flex; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 20px;
+    background: var(--glass2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--acc2); margin-bottom: 32px;
+    animation: fadeUp 0.8s 0.2s both;
+  }
+
+  .hero-badge::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--neon2);
+    box-shadow: 0 0 10px var(--neon2);
+    animation: blink 1.5s infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  .hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 900; line-height: 1.05;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s 0.4s both;
+  }
+
+  .hero-title span {
+    display: block;
+    background: linear-gradient(135deg, #fff 0%, var(--acc2) 40%, var(--neon2) 80%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 30px rgba(160,32,240,0.5));
+  }
+
+  .hero-title .line2 {
+    background: linear-gradient(135deg, var(--acc2), var(--neon2), #ff60ff);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: var(--text2); max-width: 600px;
+    line-height: 1.7; margin-bottom: 48px;
+    animation: fadeUp 0.8s 0.6s both;
+    font-weight: 300;
+  }
+
+  .hero-btns {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.8s 0.8s both;
+  }
+
+  .btn-primary {
+    padding: 16px 40px;
+    background: linear-gradient(135deg, var(--acc3), var(--neon2));
+    border: none; border-radius: 100px;
+    color: #fff; font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 2px;
+    cursor: pointer; text-transform: uppercase;
+    box-shadow: 0 0 30px rgba(160,32,240,0.5);
+    transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+
+  .btn-primary::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.15), transparent);
+    transform: translateX(-100%); transition: 0.5s;
+  }
+
+  .btn-primary:hover::after { transform: translateX(100%); }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 60px rgba(200,96,255,0.8), 0 10px 30px rgba(0,0,0,0.3);
+  }
+
+  .btn-outline {
+    padding: 16px 40px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    color: var(--acc2); font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 2px;
+    cursor: pointer; text-transform: uppercase;
+    transition: all 0.3s;
+  }
+
+  .btn-outline:hover {
+    background: var(--glass2); border-color: var(--acc2);
+    box-shadow: 0 0 30px rgba(160,32,240,0.3);
+    transform: translateY(-3px);
+  }
+
+  .hero-stats {
+    display: flex; gap: 48px; margin-top: 80px;
+    animation: fadeUp 0.8s 1s both;
+    flex-wrap: wrap; justify-content: center;
+  }
+
+  .stat-item { text-align: center; }
+
+  .stat-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem; font-weight: 900;
+    background: linear-gradient(135deg, var(--acc2), var(--neon2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .stat-label { font-size: 0.8rem; color: var(--text2); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SECTION HEADERS ─── */
+  .section-header { text-align: center; margin-bottom: 60px; }
+
+  .section-badge {
+    display: inline-block;
+    padding: 6px 20px;
+    background: var(--glass2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--acc2); margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--white), var(--acc2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+  }
+
+  .section-line {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--acc3), var(--neon2));
+    border-radius: 3px; margin: 16px auto 0;
+    box-shadow: 0 0 15px rgba(160,32,240,0.6);
+  }
+
+  .section-desc { color: var(--text2); max-width: 500px; margin: 20px auto 0; line-height: 1.7; font-size: 1rem; font-weight: 300; }
+
+  /* ─── SOBRE ─── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: center;
+    max-width: 1100px; margin: 0 auto;
+  }
+
+  @media(max-width:768px){ .about-grid { grid-template-columns:1fr; gap:40px; } }
+
+  .about-visual {
+    position: relative;
+    aspect-ratio: 1;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .about-circle {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--acc3), var(--p1));
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem;
+    box-shadow: 0 0 80px rgba(160,32,240,0.3), inset 0 0 60px rgba(160,32,240,0.1);
+    animation: float 4s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-circle::before {
+    content: '';
+    position: absolute; inset: -2px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--acc3), var(--neon2), transparent, var(--acc3));
+    animation: spin 4s linear infinite;
+    z-index: -1;
+  }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-20px); }
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .orbit {
+    position: absolute;
+    border: 1px dashed rgba(160,32,240,0.3);
+    border-radius: 50%;
+    animation: orbit-spin linear infinite;
+  }
+
+  .orbit-1 { width: 120%; height: 120%; top:-10%; left:-10%; animation-duration: 8s; }
+  .orbit-2 { width: 140%; height: 140%; top:-20%; left:-20%; animation-duration: 14s; animation-direction: reverse; }
+
+  .orbit-dot {
+    position: absolute; top: -4px; left: 50%;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--neon2);
+    box-shadow: 0 0 10px var(--neon2);
+    transform: translateX(-50%);
+  }
+
+  @keyframes orbit-spin { to { transform: rotate(360deg); } }
+
+  .about-content h2 {
+    font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--white), var(--acc2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+  }
+
+  .about-content p {
+    color: var(--text2); line-height: 1.8; margin-bottom: 20px;
+    font-size: 1rem; font-weight: 300;
+  }
+
+  .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+
+  .tag {
+    padding: 8px 18px;
+    background: var(--glass2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.8rem; letter-spacing: 1px;
+    color: var(--acc2);
+    transition: all 0.3s;
+  }
+
+  .tag:hover {
+    background: rgba(160,32,240,0.25);
+    box-shadow: 0 0 20px rgba(160,32,240,0.3);
+    transform: translateY(-2px);
+  }
+
+  /* ─── SERVICIOS ─── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px; max-width: 1200px; margin: 0 auto;
+  }
+
+  .service-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 32px;
+    transition: all 0.4s cubic-bezier(.23,1,.32,1);
+    position: relative; overflow: hidden;
+    cursor: pointer;
+  }
+
+  .service-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(160,32,240,0.15), transparent 60%);
+    opacity: 0; transition: opacity 0.4s;
+  }
+
+  .service-card::after {
+    content: ''; position: absolute;
+    top: 0; left: -100%; width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon2), transparent);
+    transition: left 0.5s;
+  }
+
+  .service-card:hover { transform: translateY(-10px); border-color: var(--acc2); box-shadow: 0 20px 60px rgba(160,32,240,0.25); }
+  .service-card:hover::before { opacity: 1; }
+  .service-card:hover::after { left: 100%; }
+
+  .svc-icon {
+    width: 60px; height: 60px; border-radius: 16px;
+    background: linear-gradient(135deg, var(--acc3), var(--neon2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; margin-bottom: 24px;
+    box-shadow: 0 0 25px rgba(160,32,240,0.4);
+  }
+
+  .svc-title {
+    font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700;
+    letter-spacing: 2px; margin-bottom: 12px; color: var(--white);
+  }
+
+  .svc-desc { color: var(--text2); font-size: 0.9rem; line-height: 1.7; font-weight: 300; }
+
+  .svc-tag {
+    display: inline-block; margin-top: 20px;
+    padding: 5px 14px; border-radius: 100px;
+    background: rgba(160,32,240,0.2); border: 1px solid var(--border);
+    font-size: 0.75rem; color: var(--acc2); letter-spacing: 1px;
+  }
+
+  /* ─── GALERÍA ─── */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px; max-width: 1200px; margin: 0 auto;
+  }
+
+  @media(max-width:900px){ .gallery-grid { grid-template-columns: repeat(2,1fr); } }
+  @media(max-width:500px){ .gallery-grid { grid-template-columns: 1fr; } }
+
+  .gallery-item {
+    position: relative; border-radius: 16px; overflow: hidden;
+    aspect-ratio: 4/3;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.4s;
+  }
+
+  .gallery-item.revealed { opacity: 1; transform: translateY(0); }
+
+  .gallery-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.5s cubic-bezier(.23,1,.32,1), filter 0.4s;
+  }
+
+  .gallery-item:hover img { transform: scale(1.12); filter: brightness(0.7); }
+
+  .gallery-item:hover {
+    box-shadow: 0 0 40px rgba(160,32,240,0.6), 0 0 0 2px var(--acc2);
+  }
+
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(45,0,96,0.9) 0%, transparent 60%);
+    display: flex; align-items: flex-end; padding: 20px;
+    opacity: 0; transition: opacity 0.4s;
+  }
+
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+  .gallery-label {
+    font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700;
+    color: var(--white); letter-spacing: 2px;
+  }
+
+  /* ─── VIDEOS ─── */
+  .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px; max-width: 1200px; margin: 0 auto;
+  }
+
+  .video-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 20px; overflow: hidden;
+    transition: all 0.4s cubic-bezier(.23,1,.32,1);
+    position: relative;
+  }
+
+  .video-card::before {
+    content: ''; position: absolute; inset: 0;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(160,32,240,0.1), transparent);
+    opacity: 0; transition: opacity 0.4s; pointer-events: none; z-index: 1;
+  }
+
+  .video-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(160,32,240,0.35), 0 0 0 1px var(--acc2);
+  }
+
+  .video-card:hover::before { opacity: 1; }
+
+  .video-embed {
+    position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+  }
+
+  .video-embed iframe {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    border: none;
+  }
+
+  .video-info { padding: 20px 24px; }
+
+  .video-title {
+    font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 700;
+    letter-spacing: 1px; color: var(--white); margin-bottom: 8px;
+  }
+
+  .video-desc { color: var(--text2); font-size: 0.85rem; line-height: 1.6; font-weight: 300; }
+
+  .video-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 12px; padding: 4px 12px; border-radius: 100px;
+    background: rgba(160,32,240,0.2); border: 1px solid var(--border);
+    font-size: 0.75rem; color: var(--neon2); letter-spacing: 1px;
+  }
+
+  .video-tag::before {
+    content: '▶'; font-size: 0.6rem;
+  }
+
+  /* ─── AUDIOS ─── */
+  .audios-container {
+    max-width: 800px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+
+  .audio-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 28px 32px;
+    display: flex; gap: 24px; align-items: center;
+    transition: all 0.4s; position: relative; overflow: hidden;
+  }
+
+  .audio-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, var(--acc3), var(--neon2));
+    border-radius: 3px 0 0 3px;
+    box-shadow: 0 0 15px var(--acc);
+  }
+
+  .audio-card:hover {
+    border-color: var(--acc2);
+    box-shadow: 0 10px 40px rgba(160,32,240,0.25);
+    transform: translateX(6px);
+  }
+
+  .audio-icon {
+    width: 56px; height: 56px; flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--acc3), var(--neon2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 0 20px rgba(160,32,240,0.4);
+    transition: all 0.3s;
+  }
+
+  .audio-card:hover .audio-icon {
+    box-shadow: 0 0 40px rgba(200,96,255,0.7);
+    transform: scale(1.1);
+  }
+
+  .audio-info { flex: 1; }
+
+  .audio-title {
+    font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700;
+    color: var(--white); letter-spacing: 2px; margin-bottom: 6px;
+  }
+
+  .audio-desc { color: var(--text2); font-size: 0.85rem; margin-bottom: 14px; font-weight: 300; }
+
+  audio {
+    width: 100%;
+    filter: invert(0);
+    accent-color: var(--acc);
+  }
+
+  audio::-webkit-media-controls-panel {
+    background: rgba(45,0,96,0.5);
+    border-radius: 10px;
+  }
+
+  .audio-wave {
+    display: flex; align-items: flex-end; gap: 3px; height: 30px;
+    margin-top: 8px;
+  }
+
+  .wave-bar {
+    width: 4px; border-radius: 2px;
+    background: linear-gradient(180deg, var(--neon2), var(--acc3));
+    animation: wave-anim 1s ease-in-out infinite;
+  }
+
+  @keyframes wave-anim {
+    0%,100% { transform: scaleY(0.3); }
+    50%      { transform: scaleY(1); }
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center; padding: 40px 5%;
+    border-top: 1px solid var(--border);
+    color: var(--text2); font-size: 0.85rem; letter-spacing: 1px;
+    position: relative; z-index: 1;
+  }
+
+  footer span { color: var(--acc2); }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--p1); }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--acc3), var(--neon2));
+    border-radius: 3px;
+  }
+
+  /* ─── CURSOR GLOW ─── */
+  .cursor-glow {
+    position: fixed; width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(160,32,240,0.08) 0%, transparent 70%);
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: left 0.1s, top 0.1s;
+  }
+
+  /* ─── GRID LINES ─── */
+  .grid-overlay {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(160,32,240,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(160,32,240,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div class="grid-overlay"></div>
+<div class="cursor-glow" id="cursor-glow"></div>
+
+<!-- ═══════════════ LOGIN ═══════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    
+     <div class="login-icon">
+  <img src="imagenes/image.png" alt="corazon">
+</div>
+
+    <div class="login-logo">HOLA, Jessica</div>
+    <div class="login-tagline">bienvenida</div>
+    <div class="login-input-wrap">
+      <span class="input-icon">🔐</span>
+      <input
+        class="login-input"
+        id="pass-input"
+        type="password"
+        placeholder="••••••••"
+        maxlength="20"
+        autocomplete="off"
+      >
+    </div>
+    <button class="login-btn" onclick="checkLogin()">
+      INICIAR SESIÓN
+    </button>
+    <div class="login-error" id="login-error">
+      ⚠ &nbsp; Acceso denegado. por no bañarte.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SITE ═══════════════ -->
+<div id="site">
+
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <div class="nav-logo" onclick="showSection('inicio')">JESSICA</div>
+    <ul class="nav-links" id="nav-links">
+      <li><a onclick="showSection('inicio')" class="active" data-sec="inicio">Inicio</a></li>
+      <li><a onclick="showSection('sobre')" data-sec="sobre">Para ti</a></li>
+      <li><a onclick="showSection('servicios')" data-sec="servicios">Poemas</a></li>
+      <li><a onclick="showSection('galeria')" data-sec="galeria">Galería</a></li>
+      <li><a onclick="showSection('videos')" data-sec="videos">Videos</a></li>
+      <li><a onclick="showSection('audios')" data-sec="audios">Audios</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ── INICIO ── -->
+  <section id="sec-inicio" class="section active">
+    <div class="hero-badge">con mucho cariño para ti</div>
+    <h1 class="hero-title">
+      <span>El rastro</span>
+      <span class="line2">de la sirena</span>
+    </h1>
+    <p class="hero-sub">
+      Como una sirena que aparece entre la marea sin avisar, tenía esa forma de quedarse en la mente incluso después de irse, como si el mar mismo repitiera su recuerdo una y otra vez.
+
+    </p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showSection('servicios')">Explorar</button>
+      <button class="btn-outline" onclick="showSection('sobre')"> Más</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num" data-count="200">0</div>
+        <div class="stat-label">lokita</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="98">0</div>
+        <div class="stat-label">Alegre</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="50">0</div>
+        <div class="stat-label">Divertida</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="10">0</div>
+        <div class="stat-label">SONSA</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SOBRE ── -->
+  <section id="sec-sobre" class="section">
+    <div class="section-header reveal">
+      <div class="section-badge">para ti</div>
+      <h2 class="section-title">Un poema </h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-visual reveal">
+        
+        <div class="login-icon">
+       <img src="imagenes/image.png" alt="corazon">
+       </div>
+
+        <div class="orbit orbit-1"><div class="orbit-dot"></div></div>
+        <div class="orbit orbit-2"><div class="orbit-dot" style="background:var(--acc2);box-shadow:0 0 10px var(--acc2)"></div></div>
+      </div>
+      <div class="about-content reveal">
+        <h2>Poema 1</h2>
+        <p> Apareció una noche cualquiera,<br>
+           con una rosa en el pelo <br>
+           y esa forma de llegar <br>
+           como si ya fuera recuerdo. <br>
+<br>
+           No decía mucho al principio,<br>
+           pero su mirada hablaba,<br>
+           como si en cada silencio <br>
+           algo más se escapara. <br>
+
+<br>
+           Tenía el mar en los ojos,<br>
+           profundo y difícil de leer, <br>
+           de esos que te acercan lento <br>
+           y luego te dejan caer. <br>
+<br>
+           Su sonrisa era corta,<br>
+           como si no fuera a durar, <br>
+           y aun así alcanzaba <br>
+           para no poderla olvidar. <br>
+<br>
+           Nunca estuvo del todo, <br>
+           siempre a punto de irse, <br>
+           como una ola en la orilla <br>
+que viene solo a despedirse. <br>
+<br>
+Había algo en su forma <br>
+que no se podía retener, <br>
+como si fuera una sirena <br>
+hecha para aparecer y desaparecer. <br>
+<br>
+No buscaba promesas, <br>
+ni se quedaba a explicar, <br> 
+dejaba todo en el airen <br>
+y el resto lo hacía imaginar. <br>
+ <br>
+Y aunque se pierda en la marea <br>
+y no vuelva a cruzar,  <br>
+hay cosas en su manera <br>
+que el tiempo no va a borrar. <br>
+ <br>
+Porque hay personas que pasan <br>
+y hay otras como ella, <br>
+que parecen del mar.</p>
+
+          <span class="tag">TE</span>
+          <span class="tag">quiero</span>
+          <span class="tag">sonsa</span>
+          <span class="tag">estupida</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICIOS ── -->
+  <section id="sec-servicios" class="section">
+    <div class="section-header reveal">
+      <div class="section-badge">ESPECIALMENTE PARA TI</div>
+      <h2 class="section-title">POEMAS</h2>
+      <div class="section-line"></div>
+      <p class="section-desc">con mucho cariño para ti</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        
+        <div class="login-icon">
+       <img src="imagenes/WhatsApp Image 2026-04-18 at 16.30.31.jpeg" alt="corazon">
+       </div>
+        <div class="svc-title">Ecos del mar</div>
+        <div class="svc-desc">Llegó con sal en el pelo,<br>
+           como si el mar la soltara,<br>
+           miró sin quedarse mucho <br>
+           y aun asi dejaba marca.</div>
+      </div>
+      <div class="service-card reveal">
+          <div class="login-icon">
+       <img src="imagenes/descargar (1).jpg" alt="corazon">
+       </div>
+        <div class="svc-title">Presencia que ilumina</div>
+        <div class="svc-desc">Llegaba como luz suave,<br>
+sin hacer ruido al entrar,<br>
+y todo tomaba forma <br>
+cuando la veía pasar.</div>
+      
+      </div>
+      <div class="service-card reveal">
+         <div class="login-icon">
+       <img src="imagenes/WhatsApp Image 2026-04-18 at 16.28.12.jpeg" alt="corazon">
+       </div>
+        <div class="svc-title">Lo simple que destaca</div>
+        <div class="svc-desc">Tenía algo en la risa <br>
+que hacía fácil respirar,<br>
+como si el mundo por un momento <br>
+decidiera no pesar.</div>
+        
+      </div>
+      <div class="service-card reveal">
+        <div class="login-icon">
+       <img src="imagenes/4k wallpaper - copia.jpg" alt="corazon">
+       </div>
+        <div class="svc-title">Magia sin esfuerzo</div>
+        <div class="svc-desc">No necesitaba nada <br>
+para hacerse notar,<br>
+porque había en su forma <br>
+algo difícil de igualar.</div>
+      
+      </div>
+      <div class="service-card reveal">
+        <div class="login-icon">
+       <img src="imagenes/WhatsApp Image 2026-04-09 at 11.13.09.jpeg" alt="corazon">
+       </div>
+        <div class="svc-title">Donde todo mejora</div>
+        <div class="svc-desc">Era calma entre el ruido,<br>
+detalle en lo normal,<br>
+de esas personas que  <br>
+y cambian el lugar.</div>
+        
+      </div>
+      <div class="service-card reveal">
+        <div class="login-icon">
+       <img src="imagenes/descargar (2).jpg" alt="corazon">
+       </div>
+        <div class="svc-title">Ella, sin explicación</div>
+        <div class="svc-desc">Sus ojos guardaban historias <br>
+que no hacía falta entender,<br>
+porque bastaba mirarlos <br>
+para quererlos leer.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GALERÍA ── -->
+  <section id="sec-galeria" class="section">
+    <div class="section-header reveal">
+      <div class="section-badge">galeria de fotos</div>
+      <h2 class="section-title">Galería</h2>
+      <div class="section-line"></div>
+      <p class="section-desc">Tenía esa forma tranquila de estar, como si no necesitara hacer nada para destacar, y aun así todo a su alrededor cambiaba un poco cuando aparecía, como si su presencia dejara una marca suave pero imposible de ignorar.
+</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item" style="transition-delay:0.0s">
+        <img src="imagenes/WhatsApp Image 2026-04-18 at 16.31.48.jpeg" alt="IA Neural">
+        <div class="gallery-overlay"><div class="gallery-label">Ella no hacía ruido, pero cambiaba todo</div></div>
+      </div>
+      <div class="gallery-item" style="transition-delay:0.1s">
+        <img src="imagenes/descargar (3).jpg" alt="Robot IA">
+        <div class="gallery-overlay"><div class="gallery-label">Tenía algo que no se explica, solo se nota</div></div>
+      </div>
+      <div class="gallery-item" style="transition-delay:0.2s">
+        <img src="imagenes/nf.jpg" alt="Data">
+        <div class="gallery-overlay"><div class="gallery-label">Donde estaba ella, todo se sentía distinto</div></div>
+      </div>
+      <div class="gallery-item" style="transition-delay:0.3s">
+        <img src="imagenes/WhatsApp Image 2026-05-01 at 18.20.58.jpeg" alt="Generative AI">
+        <div class="gallery-overlay"><div class="gallery-label">No intentaba brillar, pero igual lo hacía</div></div>
+      </div>
+      <div class="gallery-item" style="transition-delay:0.4s">
+        <img src="imagenes/494106986_661959979780690_867494162346084510_n.jpg" alt="Código">
+        <div class="gallery-overlay"><div class="gallery-label">Su forma de ser decía más que mil palabras</div></div>
+      </div>
+      <div class="gallery-item" style="transition-delay:0.5s">
+        <img src="imagenes/descargar (1).jpg" alt="Holograma">
+        <div class="gallery-overlay"><div class="gallery-label">Era de esas presencias que no pasan desapercibidas</div></div>
+      </div>
+      <div class="gallery-item" style="transition-delay:0.6s">
+        <img src="imagenes/4k wallpaper - copia.jpg" alt="Machine Learning">
+        <div class="gallery-overlay"><div class="gallery-label">Llegaba sin aviso, pero siempre se notaba</div></div>
+      </div>
+      <div class="gallery-item" style="transition-delay:0.7s">
+        <img src="imagenes/WhatsApp Image 2026-04-18 at 16.30.31.jpeg" alt="Programación">
+        <div class="gallery-overlay"><div class="gallery-label">Tenía una calma que lo cambiaba todo</div></div>
+      </div>
+      <div class="gallery-item" style="transition-delay:0.8s">
+        <img src="imagenes/482095288_623318613644827_1139698795885283602_n.jpg" alt="Matrix">
+        <div class="gallery-overlay"><div class="gallery-label">Sin decir mucho, lo decía todo.
+
+</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── VIDEOS ── -->
+  <section id="sec-videos" class="section">
+    <div class="section-header reveal">
+      <div class="section-badge">Contenido</div>
+      <h2 class="section-title">Videos Destacados</h2>
+      <div class="section-line"></div>
+      <p class="section-desc">tenía una forma de estar tan natural que, sin darse cuenta, hacía que todo a su alrededor se sintiera un poco más vivo</p>
+    </div>
+    <div class="videos-grid">
+      <div class="video-card reveal">
+        <div class="video-embed">
+          <iframe src="videos/WhatsApp Video 2026-05-01 at 18.42.21.mp4" title="IA Explicada" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Presencia que cambia</div>
+          <div class="video-desc">Había algo en su manera de estar que hacía que todo alrededor se sintiera distinto, como si sin proponérselo lograra cambiar el ambiente por completo</div>
+          <span class="video-tag">sonsa</span>
+        </div>
+      </div>
+      <div class="video-card reveal">
+        <div class="video-embed">
+          <iframe src="videos/WhatsApp Video 2026-05-01 at 18.42.41.mp4" title="Machine Learning" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Huella sin esfuerzo</div>
+          <div class="video-desc">no necesitaba llamar la atención ni decir demasiado, porque su presencia tenía esa forma natural de destacar y quedarse en la mente sin esfuerzo.</div>
+          <span class="video-tag">lokita</span>
+        </div>
+      </div>
+      <div class="video-card reveal">
+        <div class="video-embed">
+          <iframe src="videos/WhatsApp Video 2026-05-01 at 18.42.59.mp4" title="Neural Networks" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Más que palabras</div>
+          <div class="video-desc">su forma de mirar y de moverse decía más que cualquier palabra, dejando una sensación que no se explica fácil pero tampoco se olvida</div>
+          <span class="video-tag">xd</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AUDIOS ── -->
+  <section id="sec-audios" class="section">
+    <div class="section-header reveal">
+      <div class="section-badge">MUSICA</div>
+      <h2 class="section-title">Experiencias de Audio</h2>
+      <div class="section-line"></div>
+      <p class="section-desc">Sumérgete en el universo de la música generativa y experiencias auditivas.</p>
+    </div>
+    <div class="audios-container">
+      <div class="audio-card reveal">
+        <div class="audio-icon">🎙️</div>
+        <div class="audio-info">
+          <div class="audio-title">CANCION 1</div>
+          <div class="audio-desc">Hay canciones que no suenan igual desde que ella apareció</div>
+          <audio controls>
+            <source src="musica/Download-_1_.mp3" type="audio/mpeg">
+          </audio>
+          <div class="audio-wave">
+            <div class="wave-bar" style="height:60%;animation-delay:0.0s"></div>
+            <div class="wave-bar" style="height:100%;animation-delay:0.1s"></div>
+            <div class="wave-bar" style="height:40%;animation-delay:0.2s"></div>
+            <div class="wave-bar" style="height:80%;animation-delay:0.3s"></div>
+            <div class="wave-bar" style="height:60%;animation-delay:0.4s"></div>
+            <div class="wave-bar" style="height:100%;animation-delay:0.5s"></div>
+            <div class="wave-bar" style="height:50%;animation-delay:0.6s"></div>
+            <div class="wave-bar" style="height:70%;animation-delay:0.7s"></div>
+          </div>
+        </div>
+      </div>
+      <div class="audio-card reveal">
+        <div class="audio-icon">🎵</div>
+        <div class="audio-info">
+          <div class="audio-title">CANCION 2</div>
+          <div class="audio-desc">Su recuerdo tiene ritmo propio, como si viviera dentro de cada melodía</div>
+          <audio controls>
+            <source src="musica/SaveTik.io_7580707419500596487.mp3" type="audio/mpeg">
+          </audio>
+          <div class="audio-wave">
+            <div class="wave-bar" style="height:80%;animation-delay:0.1s"></div>
+            <div class="wave-bar" style="height:50%;animation-delay:0.2s"></div>
+            <div class="wave-bar" style="height:100%;animation-delay:0.3s"></div>
+            <div class="wave-bar" style="height:60%;animation-delay:0.0s"></div>
+            <div class="wave-bar" style="height:90%;animation-delay:0.4s"></div>
+            <div class="wave-bar" style="height:40%;animation-delay:0.5s"></div>
+            <div class="wave-bar" style="height:70%;animation-delay:0.1s"></div>
+            <div class="wave-bar" style="height:100%;animation-delay:0.2s"></div>
+          </div>
+        </div>
+      </div>
+      <div class="audio-card reveal">
+        <div class="audio-icon">🌌</div>
+        <div class="audio-info">
+          <div class="audio-title">CANCION 3</div>
+          <div class="audio-desc">Cada vez que suena esa canción, parece que ella vuelve sin avisar
+
+</div>
+          <audio controls>
+            <source src="musica/SnapVid.Net_7519234429781331233.mp3" type="audio/mpeg">
+          </audio>
+          <div class="audio-wave">
+            <div class="wave-bar" style="height:40%;animation-delay:0.3s"></div>
+            <div class="wave-bar" style="height:70%;animation-delay:0.1s"></div>
+            <div class="wave-bar" style="height:100%;animation-delay:0.4s"></div>
+            <div class="wave-bar" style="height:50%;animation-delay:0.2s"></div>
+            <div class="wave-bar" style="height:80%;animation-delay:0.5s"></div>
+            <div class="wave-bar" style="height:60%;animation-delay:0.0s"></div>
+            <div class="wave-bar" style="height:90%;animation-delay:0.3s"></div>
+            <div class="wave-bar" style="height:45%;animation-delay:0.1s"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 <span>Mister_J</span> Todos los derechos reservados.</p>
+  </footer>
+
+</div>
+
+<script>
+/* ─── PARTICLES BG ─── */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [], connections = [];
+
+function resizeCanvas() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.4;
+    this.vy = (Math.random() - 0.5) * 0.4;
+    this.r = Math.random() * 1.5 + 0.5;
+    this.alpha = Math.random() * 0.5 + 0.2;
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > W) this.vx *= -1;
+    if (this.y < 0 || this.y > H) this.vy *= -1;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(160,32,240,${this.alpha})`;
+    ctx.fill();
+  }
+}
+
+function initParticles() {
+  particles = [];
+  const count = Math.min(Math.floor(W * H / 12000), 100);
+  for (let i = 0; i < count; i++) particles.push(new Particle());
+}
+
+function drawConnections() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 130) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        const alpha = (1 - dist / 130) * 0.15;
+        ctx.strokeStyle = `rgba(160,32,240,${alpha})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+let animFrame;
+function animate() {
+  animFrame = requestAnimationFrame(animate);
+  ctx.clearRect(0, 0, W, H);
+  // gradient bg
+  const grd = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W,H)/1.4);
+  grd.addColorStop(0, 'rgba(26,0,48,1)');
+  grd.addColorStop(1, 'rgba(13,0,16,1)');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, W, H);
+  drawConnections();
+  particles.forEach(p => { p.update(); p.draw(); });
+}
+
+resizeCanvas();
+initParticles();
+animate();
+
+window.addEventListener('resize', () => {
+  resizeCanvas(); initParticles();
+});
+
+/* ─── CURSOR GLOW ─── */
+const cursorGlow = document.getElementById('cursor-glow');
+document.addEventListener('mousemove', e => {
+  cursorGlow.style.left = e.clientX + 'px';
+  cursorGlow.style.top  = e.clientY + 'px';
+});
+
+/* ─── LOGIN ─── */
+const loginScreen = document.getElementById('login-screen');
+const passInput   = document.getElementById('pass-input');
+const loginError  = document.getElementById('login-error');
+const site        = document.getElementById('site');
+
+passInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkLogin();
+  loginError.classList.remove('show');
+});
+
+function checkLogin() {
+  if (passInput.value === '1234') {
+    loginScreen.classList.add('hide');
+    setTimeout(() => {
+      loginScreen.style.display = 'none';
+      site.classList.add('visible');
+      initSite();
+    }, 800);
+  } else {
+    loginError.classList.remove('show');
+    void loginError.offsetWidth; // reflow
+    loginError.classList.add('show');
+    passInput.value = '';
+    passInput.focus();
+  }
+}
+
+/* ─── NAV ─── */
+const navLinks = document.getElementById('nav-links');
+const hamburger = document.getElementById('hamburger');
+
+function toggleMenu() {
+  navLinks.classList.toggle('open');
+}
+
+// Close on outside click
+document.addEventListener('click', e => {
+  if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+    navLinks.classList.remove('open');
+  }
+});
+
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+/* ─── SECTIONS ─── */
+let currentSection = 'inicio';
+
+function showSection(sec) {
+  // Hide current
+  const cur = document.getElementById('sec-' + currentSection);
+  if (cur) cur.classList.remove('active');
+  // Update nav
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.toggle('active', a.dataset.sec === sec);
+  });
+  // Show new
+  const next = document.getElementById('sec-' + sec);
+  if (next) {
+    next.classList.add('active');
+    currentSection = sec;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => initReveal(), 100);
+    navLinks.classList.remove('open');
+    // gallery trigger
+    if (sec === 'galeria') triggerGallery();
+  }
+}
+
+/* ─── SCROLL REVEAL ─── */
+function initReveal() {
+  const els = document.querySelectorAll('#sec-' + currentSection + ' .reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 100);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+}
+
+/* ─── GALLERY REVEAL ─── */
+function triggerGallery() {
+  const items = document.querySelectorAll('.gallery-item');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('revealed');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  items.forEach(item => obs.observe(item));
+}
+
+/* ─── COUNTER ANIMATION ─── */
+function animateCounters() {
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = +el.dataset.count;
+    const dur = 2000;
+    const step = target / (dur / 16);
+    let cur = 0;
+    const timer = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.textContent = Math.floor(cur) + (target === 98 ? '%' : '+');
+      if (cur >= target) clearInterval(timer);
+    }, 16);
+  });
+}
+
+/* ─── INIT SITE ─── */
+function initSite() {
+  initReveal();
+  animateCounters();
+  // auto-reveal all current section reveals
+  setTimeout(() => {
+    document.querySelectorAll('#sec-inicio .reveal').forEach(el => el.classList.add('visible'));
+  }, 300);
+}
+</script>
+</body>
+</html>
